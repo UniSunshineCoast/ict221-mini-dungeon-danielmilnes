@@ -1,6 +1,8 @@
 # ICT221_MiniDungeon
 
-Starting code for the MiniDungeon game.
+ICT221 Task 2 - MiniDungeon game.
+
+Created based on the provided sample code.
 
 Some image files are provided in "resources" folder. You can use them in the GUI. Or you can choose your own image files.
 
