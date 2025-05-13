@@ -28,7 +28,7 @@ public class GameEngine {
                 grid[x][y] = new FloorTile();
             }
         }
-        //place("player", 1); // Place player on grid
+        place("player", 1); // Place player on grid
 
 
         // CODE FOR GUI
@@ -80,10 +80,7 @@ public class GameEngine {
                 x = r.nextInt(10);
                 y = r.nextInt(10);
                 if (grid[x][y].getType().equals("floor")) {occupied = false;}
-                System.out.println("DEBUG: Attempting to place " + tile + " on " + x + ", " + y +
-                        " - currently occupied by " + grid[x][y].getType());
             }
-            System.out.println("DEBUG: Placing at " + x + ", " + y);
             if (tile == "player") {
                 grid[x][y] = new PlayerTile();
             }
