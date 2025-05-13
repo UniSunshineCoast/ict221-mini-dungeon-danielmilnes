@@ -11,15 +11,9 @@ public class Tile {
         this.fxStyle = fxStyle;
     }
 
-    public String getType() {
-        return this.type;
-    }
+    public String getType() { return this.type; }
 
-    public String getContent() {
-        return this.content;
-    }
+    public String getContent() { return this.content; }
 
-    public String getFXStyle() {
-        return this.fxStyle;
-    }
+    public String getFXStyle() { return this.fxStyle; }
 }

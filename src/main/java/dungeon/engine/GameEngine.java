@@ -1,7 +1,6 @@
 package dungeon.engine;
 
 import javafx.scene.text.Text;
-import java.util.Arrays;
 import java.util.Random;
 
 public class GameEngine {
@@ -28,7 +27,14 @@ public class GameEngine {
                 grid[x][y] = new FloorTile();
             }
         }
-        place("player", 1); // Place player on grid
+        // Place tiles on grid
+        place("player", 1);
+        place("ladder", 1);
+        place("trap", 5);
+        place("gold", 5);
+        place("meleeMutant", 3);
+        place("rangedMutant", 1);
+        place("healthPotion", 2);
 
 
         // CODE FOR GUI
@@ -81,9 +87,13 @@ public class GameEngine {
                 y = r.nextInt(10);
                 if (grid[x][y].getType().equals("floor")) {occupied = false;}
             }
-            if (tile == "player") {
-                grid[x][y] = new PlayerTile();
-            }
+            if (tile.equals("player"))      {grid[x][y] = new PlayerTile();}
+            if (tile.equals("ladder"))      {grid[x][y] = new LadderTile();}
+            if (tile.equals("trap"))        {grid[x][y] = new TrapTile();}
+            if (tile.equals("gold"))        {grid[x][y] = new GoldTile();}
+            if (tile.equals("meleeMutant")) {grid[x][y] = new MeleeMutantTile();}
+            if (tile.equals("rangedMutant")){grid[x][y] = new RangedMutantTile();}
+            if (tile.equals("healthPotion")){grid[x][y] = new HealthPotionTile();}
         }
     }
 
