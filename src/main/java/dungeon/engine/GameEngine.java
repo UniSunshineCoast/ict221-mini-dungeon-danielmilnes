@@ -19,12 +19,13 @@ public class GameEngine {
     public GameEngine(int size) {
         map = new Cell[size][size];
 
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
                 Cell cell = new Cell();
-                Text text = new Text(i + "," + j);
+                cell.setContent(x + "," + y);
+                Text text = new Text(cell.getContent());
                 cell.getChildren().add(text);
-                map[i][j] = cell;
+                map[x][y] = cell;
             }
         }
 
