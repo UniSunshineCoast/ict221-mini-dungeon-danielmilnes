@@ -7,18 +7,4 @@ import javafx.scene.layout.StackPane;
  * displayed on it, although setting the Content does not
  */
 public class Cell extends StackPane {
-    private String content;
-    private String fxStyle;
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String input) {
-        content = input;
-    }
-
-    public String getFXStyle() {
-        return fxStyle;
-    }
 }

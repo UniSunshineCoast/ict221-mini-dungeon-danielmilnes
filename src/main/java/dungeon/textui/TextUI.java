@@ -1,17 +1,17 @@
 package dungeon.textui;
 
-import dungeon.engine.Cell;
 import dungeon.engine.GameEngine;
+import dungeon.engine.Tile;
 
 public class TextUI {
 
     GameEngine engine = new GameEngine(10);
 
     public void drawUI() {
-        Cell[][] map = engine.getMap();
-        for (Cell[] row : map) {
-            for (Cell cell : row) {
-                System.out.print(cell.getContent() + " ");
+        Tile[][] grid = engine.getGrid();
+        for (Tile[] row : grid) {
+            for (Tile tile : row) {
+                System.out.print(tile.getContent() + " ");
             }
             System.out.println();
         }
