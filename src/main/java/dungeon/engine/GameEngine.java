@@ -7,6 +7,10 @@ public class GameEngine {
 
     private Cell[][] map;
     private Tile[][] grid;
+    private int level = 1;
+    private int ladderX;
+    private int ladderY;
+    private String gameState;
 
     /**
      * Runs the game.
@@ -14,6 +18,7 @@ public class GameEngine {
      * @param size the width and height.
      */
     public GameEngine(int size) {
+        gameState = "starting";
 
         // The grid is the logical view of the game. The map is the JavaFX view of the game.
         // The grid is a 2D array of Tile objects which each have a "type" and "content".
@@ -27,7 +32,10 @@ public class GameEngine {
                 grid[x][y] = new FloorTile();
             }
         }
+
         // Place tiles on grid
+        place("entry", 1);
+        place("wall", 20);
         place("player", 1);
         place("ladder", 1);
         place("trap", 5);
@@ -35,6 +43,8 @@ public class GameEngine {
         place("meleeMutant", 3);
         place("rangedMutant", 1);
         place("healthPotion", 2);
+
+        gameState = "running";
 
 
         // CODE FOR GUI
@@ -81,19 +91,39 @@ public class GameEngine {
             Random r = new Random();
             boolean occupied = true;
             int x = 0; int y = 0;
+
             // Find unoccupied tile
             while (occupied) {
                 x = r.nextInt(10);
                 y = r.nextInt(10);
                 if (grid[x][y].getType().equals("floor")) {occupied = false;}
             }
-            if (tile.equals("player"))      {grid[x][y] = new PlayerTile();}
-            if (tile.equals("ladder"))      {grid[x][y] = new LadderTile();}
-            if (tile.equals("trap"))        {grid[x][y] = new TrapTile();}
-            if (tile.equals("gold"))        {grid[x][y] = new GoldTile();}
-            if (tile.equals("meleeMutant")) {grid[x][y] = new MeleeMutantTile();}
-            if (tile.equals("rangedMutant")){grid[x][y] = new RangedMutantTile();}
-            if (tile.equals("healthPotion")){grid[x][y] = new HealthPotionTile();}
+
+            // Entry tile: bottom-left on level 1, same as level 1 ladder on level 2
+            if (tile.equals("entry")) {
+                if (level == 1) {grid[getSize()-1][0] = new EntryTile();}
+                else {grid[ladderX][ladderY] = new EntryTile();}
+            }
+
+            // Ladder tile: place randomly, set ladderX and ladderY on level 1
+            if (tile.equals("ladder")) {
+                if (level == 1) {ladderX = x; ladderY = y;}
+                grid[x][y] = new LadderTile();
+            }
+
+            // Player tile: spawn on entry tile
+            if (tile.equals("player")) {
+                if (level == 1) {grid[getSize()-1][1] = new PlayerTile();}
+                if (level == 2) {grid[ladderX][ladderY] = new PlayerTile();}
+            }
+            // Wall tile: idk what to do with these yet
+            if (tile.equals("wall")) {grid[x][y] = new WallTile();}
+            // Tiles to be placed randomly
+            if (tile.equals("trap")) {grid[x][y] = new TrapTile();}
+            if (tile.equals("gold")) {grid[x][y] = new GoldTile();}
+            if (tile.equals("meleeMutant"))  {grid[x][y] = new MeleeMutantTile();}
+            if (tile.equals("rangedMutant")) {grid[x][y] = new RangedMutantTile();}
+            if (tile.equals("healthPotion")) {grid[x][y] = new HealthPotionTile();}
         }
     }
 
@@ -124,8 +154,12 @@ public class GameEngine {
         return map;
     }
 
+    public String getGameState() {
+        return gameState;
+    }
+
     /**
-     * Plays a text-based game
+     * Plays a text-based game (obsolete, run TextUI.java)
      */
     public static void main(String[] args) {
         GameEngine engine = new GameEngine(10);

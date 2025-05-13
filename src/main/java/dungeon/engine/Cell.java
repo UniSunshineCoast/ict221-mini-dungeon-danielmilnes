@@ -3,8 +3,8 @@ package dungeon.engine;
 import javafx.scene.layout.StackPane;
 
 /**
- * A Cell is a JavaFX Pane representing one grid tile. Its 'content' field contains the String that should be
- * displayed on it, although setting the Content does not
+ * A Cell is a JavaFX Pane representing one grid tile. When created, it will contain a Text node with its associated
+ * Tile's content.
  */
 public class Cell extends StackPane {
 }
