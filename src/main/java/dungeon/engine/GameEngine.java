@@ -132,11 +132,14 @@ public class GameEngine {
      * @param input The input. Only accepts "up", "down", "left" and "right".
      */
     public void playerInput(String input) {
+        // X = ROW
+        // Y = COLUMN
+        // MUST BE REFERENCED WITH GRID[Y][X]
         int playerX = getPlayerX();
         int playerY = getPlayerY();
         int destinationX;
         int destinationY;
-        switch (input) {    // Decide whether the player should move, and get their destination if so
+        switch (input) {    // Ignore command if out of bounds, otherwise determine destination
             case "up":
                 if (playerY == 0) {return;}
                 destinationX = playerX;
@@ -161,12 +164,28 @@ public class GameEngine {
                 System.out.println("Invalid input.");
                 return;
         }
-        // PLACEHOLDER
-        System.out.println("Player: " + playerX + ", " + playerY);
-        System.out.println("Destination: " + destinationX + ", " + destinationY);
+        // Don't allow player to move into walls
+        if (grid[destinationY][destinationX].getType().equals("wall")) {return;}
+        // DEBUG
+        System.out.println("Player: " + playerX + ", " + playerY + " " + grid[playerY][playerX].getType());
+        System.out.println("Destination: " + destinationX + ", " + destinationY + " " + grid[destinationY][destinationX].getType());
+
+        // Move player
+        moveTo(destinationX, destinationY);
     }
 
-    private int getPlayerX() {
+    /**
+     * Moves the player tile from its current position to the destination. Assumes that the move
+     * has already been validated.
+     * @param x Destination x (row)
+     * @param y Destination y (column)
+     */
+    public void moveTo(int x, int y) {
+        grid[getPlayerY()][getPlayerX()] = new FloorTile();
+        grid[y][x] = new PlayerTile();
+    }
+
+    public int getPlayerX() {
         Tile[][] grid = getGrid();
         int xCounter = 0;
         for (Tile[] row : grid) {
@@ -181,7 +200,7 @@ public class GameEngine {
         return -1;
     }
 
-    private int getPlayerY() {
+    public int getPlayerY() {
         Tile[][] grid = getGrid();
         int yCounter = 0;
         for (Tile[] row : grid) {

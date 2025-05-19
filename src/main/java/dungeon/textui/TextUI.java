@@ -32,6 +32,7 @@ public class TextUI {
             String input = scn.next();
             input = input.strip();
             ui.processInput(input);
+            ui.drawUI();
         }
 
         scn.close();
