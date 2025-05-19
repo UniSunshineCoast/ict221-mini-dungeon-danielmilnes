@@ -128,6 +128,74 @@ public class GameEngine {
     }
 
     /**
+     * Run when receiving input from the TextUI/GUI controller.
+     * @param input The input. Only accepts "up", "down", "left" and "right".
+     */
+    public void playerInput(String input) {
+        int playerX = getPlayerX();
+        int playerY = getPlayerY();
+        int destinationX;
+        int destinationY;
+        switch (input) {    // Decide whether the player should move, and get their destination if so
+            case "up":
+                if (playerY == 0) {return;}
+                destinationX = playerX;
+                destinationY = playerY - 1;
+                break;
+            case "down":
+                if (playerY == getSize() - 1) {return;}
+                destinationX = playerX;
+                destinationY = playerY + 1;
+                break;
+            case "left":
+                if (playerX == 0) {return;}
+                destinationX = playerX - 1;
+                destinationY = playerY;
+                break;
+            case "right":
+                if (playerX == getSize() - 1) {return;}
+                destinationX = playerX + 1;
+                destinationY = playerY;
+                break;
+            default:
+                System.out.println("Invalid input.");
+                return;
+        }
+        // PLACEHOLDER
+        System.out.println("Player: " + playerX + ", " + playerY);
+        System.out.println("Destination: " + destinationX + ", " + destinationY);
+    }
+
+    private int getPlayerX() {
+        Tile[][] grid = getGrid();
+        int xCounter = 0;
+        for (Tile[] row : grid) {
+            xCounter = 0;
+            for (Tile tile : row) {
+                if (tile.getType().equals("player")) {
+                    return xCounter;
+                }
+                xCounter++;
+            }
+        }
+        return -1;
+    }
+
+    private int getPlayerY() {
+        Tile[][] grid = getGrid();
+        int yCounter = 0;
+        for (Tile[] row : grid) {
+            for (Tile tile : row) {
+                if (tile.getType().equals("player")) {
+                    return yCounter;
+                }
+            }
+            yCounter++;
+        }
+        return -1;
+    }
+
+    /**
      * The size of the grid.
      *
      * @return this is both the width and the height.

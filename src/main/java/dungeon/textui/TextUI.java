@@ -19,18 +19,7 @@ public class TextUI {
     }
 
     public void processInput(String input) {
-        switch (input) {
-            case "up":
-                // tell engine to move up
-            case "down":
-                // tell engine to move down
-            case "left":
-                // tell engine to move left
-            case "right":
-                // tell engine to move right
-            default:
-                System.out.println("Invalid input.");
-        }
+        engine.playerInput(input);
     }
 
     public static void main(String[] args) {
@@ -41,6 +30,7 @@ public class TextUI {
         while (ui.engine.getGameState().equals("running")) {
             System.out.print("Input: ");
             String input = scn.next();
+            input = input.strip();
             ui.processInput(input);
         }
 
