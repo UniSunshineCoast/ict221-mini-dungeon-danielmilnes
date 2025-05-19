@@ -9,6 +9,9 @@ public class TextUI {
     GameEngine engine = new GameEngine(10);
 
     public void drawUI() {
+        System.out.println("HP: " + engine.getHP());
+        System.out.println("Score: " + engine.getScore());
+        System.out.println("Moves remaining: " + engine.getMovesLeft());
         Tile[][] grid = engine.getGrid();
         for (Tile[] row : grid) {
             for (Tile tile : row) {

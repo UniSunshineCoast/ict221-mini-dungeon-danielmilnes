@@ -11,6 +11,9 @@ public class GameEngine {
     private int ladderX;
     private int ladderY;
     private String gameState;
+    private int score = 0;
+    private int hp = 10;
+    private int movesLeft = 100;
 
     /**
      * Runs the game.
@@ -33,7 +36,7 @@ public class GameEngine {
             }
         }
 
-        // Place tiles on grid
+        // BUILD LEVEL 1: Place tiles on grid
         place("entry", 1);
         place("wall", 20);
         place("player", 1);
@@ -94,8 +97,8 @@ public class GameEngine {
 
             // Find unoccupied tile
             while (occupied) {
-                x = r.nextInt(10);
-                y = r.nextInt(10);
+                x = r.nextInt(getSize());
+                y = r.nextInt(getSize());
                 if (grid[x][y].getType().equals("floor")) {occupied = false;}
             }
 
@@ -181,7 +184,32 @@ public class GameEngine {
      * @param y Destination y (column)
      */
     public void moveTo(int x, int y) {
-        grid[getPlayerY()][getPlayerX()] = new FloorTile();
+        movesLeft -= 1;
+        switch (grid[y][x].getType()) {
+            case "gold":
+                score += 2;
+            case "healthPotion":
+                hp += 4;
+                if (hp > 10) {hp = 10;}
+            case "trap":
+                hp -= 2;
+            case "meleeMutant":
+                hp -= 2;
+                score += 2;
+            case "rangedMutant":
+                score += 2;
+        }
+        // check for ranged enemies
+        /*
+        if ((grid[y+2][x].getContent().equals("rangedMutant")) || (grid[y-2][x].getContent().equals("rangedMutant"))
+         || (grid[y][x+2].getContent().equals("rangedMutant")) || (grid[y][x-2].getContent().equals("rangedMutant"))) {
+            hp -= 2;
+        }
+        */
+
+        // Update grid
+        grid[getPlayerY()][getPlayerX()] = new FloorTile(); // Set player coordinates to empty tile
+        place("entry", 1);  // Replace the entry tile in case the player tile overwrote it
         grid[y][x] = new PlayerTile();
     }
 
@@ -243,6 +271,18 @@ public class GameEngine {
 
     public String getGameState() {
         return gameState;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getHP() {
+        return hp;
+    }
+
+    public int getMovesLeft() {
+        return movesLeft;
     }
 
     /**
