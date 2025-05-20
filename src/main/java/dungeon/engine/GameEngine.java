@@ -31,22 +31,9 @@ public class GameEngine {
         // Create grid
         grid = new Tile[size][size];
         // Fill with floor tiles
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
-                grid[x][y] = new FloorTile();
-            }
-        }
-
-        // BUILD LEVEL 1: Place tiles on grid
-        place("entry", 1);
-        place("wall", 20);
-        place("player", 1);
-        place("ladder", 1);
-        place("trap", 5);
-        place("gold", 5);
-        place("meleeMutant", 3);
-        place("rangedMutant", 1);
-        place("healthPotion", 2);
+        clearGrid();
+        // Build level 1
+        buildLevel();
 
         gameState = "running";
 
@@ -170,18 +157,16 @@ public class GameEngine {
         // Don't allow player to move into walls
         if (grid[destinationY][destinationX].getType().equals("wall")) {return;}
 
-        // DEBUG
-        System.out.println("DEBUG Player: " + playerX + ", " + playerY + " " + grid[playerY][playerX].getType());
-        System.out.println("DEBUG Destination: " + destinationX + ", " + destinationY + " " + grid[destinationY][destinationX].getType());
-
         // Move player
         moveTo(destinationX, destinationY);
+
+        // Check if player lost game
+        if (movesLeft == 0 || hp <= 0) {gameState = "lost";}
     }
 
     /**
-     * Moves the player tile from its current position to the destination. Assumes that the move
-     * has already been validated. This also handles all the logic for advancing the game (score,
-     * HP, move counter).
+     * Moves the player tile from its current position to the destination, and handles logic for landing on a tile.
+     * Assumes that the move has already been validated.
      * @param x Destination x (row)
      * @param y Destination y (column)
      */
@@ -205,6 +190,15 @@ public class GameEngine {
             case "rangedMutant":
                 score += 2;
                 break;
+            case "ladder": // Advance level or end game
+                if (level == 1) {
+                    level = 2;
+                    clearGrid();
+                    buildLevel();
+                }
+                else {
+                    gameState = "won";
+                }
         }
         // check for ranged enemies in attack range, and roll 50% chance to hit
         // 2 if statements - will not cause index out of bounds exception
@@ -219,6 +213,35 @@ public class GameEngine {
         grid[y][x] = new PlayerTile();
     }
 
+    /**
+     * Fills the grid with floor tiles.
+     */
+    public void clearGrid() {
+        for (int x = 0; x < getSize(); x++) {
+            for (int y = 0; y < getSize(); y++) {
+                grid[x][y] = new FloorTile();
+            }
+        }
+    }
+
+    /**
+     * Places all the objects in the level.
+     */
+    public void buildLevel() {
+        place("entry", 1);
+        place("wall", 20);
+        place("player", 1);
+        place("ladder", 1);
+        place("trap", 5);
+        place("gold", 5);
+        place("meleeMutant", 3);
+        place("rangedMutant", 1);
+        place("healthPotion", 2);
+    }
+
+    /**
+     * @return Player's x position (0-9).
+     */
     public int getPlayerX() {
         Tile[][] grid = getGrid();
         int xCounter = 0;
