@@ -14,6 +14,7 @@ public class GameEngine {
     private int score = 0;
     private int hp = 10;
     private int movesLeft = 100;
+    Random r = new Random();
 
     /**
      * Runs the game.
@@ -91,7 +92,6 @@ public class GameEngine {
      */
     public void place(String tile, int count) {
         for (int counter = 0; counter < count; counter++) {
-            Random r = new Random();
             boolean occupied = true;
             int x = 0; int y = 0;
 
@@ -169,9 +169,10 @@ public class GameEngine {
         }
         // Don't allow player to move into walls
         if (grid[destinationY][destinationX].getType().equals("wall")) {return;}
+
         // DEBUG
-        System.out.println("Player: " + playerX + ", " + playerY + " " + grid[playerY][playerX].getType());
-        System.out.println("Destination: " + destinationX + ", " + destinationY + " " + grid[destinationY][destinationX].getType());
+        System.out.println("DEBUG Player: " + playerX + ", " + playerY + " " + grid[playerY][playerX].getType());
+        System.out.println("DEBUG Destination: " + destinationX + ", " + destinationY + " " + grid[destinationY][destinationX].getType());
 
         // Move player
         moveTo(destinationX, destinationY);
@@ -179,7 +180,8 @@ public class GameEngine {
 
     /**
      * Moves the player tile from its current position to the destination. Assumes that the move
-     * has already been validated.
+     * has already been validated. This also handles all the logic for advancing the game (score,
+     * HP, move counter).
      * @param x Destination x (row)
      * @param y Destination y (column)
      */
@@ -188,24 +190,28 @@ public class GameEngine {
         switch (grid[y][x].getType()) {
             case "gold":
                 score += 2;
+                break;
             case "healthPotion":
                 hp += 4;
                 if (hp > 10) {hp = 10;}
+                break;
             case "trap":
                 hp -= 2;
+                break;
             case "meleeMutant":
                 hp -= 2;
                 score += 2;
+                break;
             case "rangedMutant":
                 score += 2;
+                break;
         }
-        // check for ranged enemies
-        /*
-        if ((grid[y+2][x].getContent().equals("rangedMutant")) || (grid[y-2][x].getContent().equals("rangedMutant"))
-         || (grid[y][x+2].getContent().equals("rangedMutant")) || (grid[y][x-2].getContent().equals("rangedMutant"))) {
-            hp -= 2;
-        }
-        */
+        // check for ranged enemies in attack range, and roll 50% chance to hit
+        // 2 if statements - will not cause index out of bounds exception
+        if (x >= 2 && r.nextBoolean()) {if (grid[y][x-2].getType().equals("rangedMutant")) {hp -= 2;}}
+        if (x <= 7 && r.nextBoolean()) {if (grid[y][x+2].getType().equals("rangedMutant")) {hp -= 2;}}
+        if (y >= 2 && r.nextBoolean()) {if (grid[y-2][x].getType().equals("rangedMutant")) {hp -= 2;}}
+        if (y <= 7 && r.nextBoolean()) {if (grid[y+2][x].getType().equals("rangedMutant")) {hp -= 2;}}
 
         // Update grid
         grid[getPlayerY()][getPlayerX()] = new FloorTile(); // Set player coordinates to empty tile
