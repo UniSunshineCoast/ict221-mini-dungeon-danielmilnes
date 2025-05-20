@@ -257,6 +257,9 @@ public class GameEngine {
         return -1;
     }
 
+    /**
+     * @return Player's y position (0-9).
+     */
     public int getPlayerY() {
         Tile[][] grid = getGrid();
         int yCounter = 0;
@@ -298,18 +301,30 @@ public class GameEngine {
         return map;
     }
 
+    /**
+     * @return The game state ("starting", "running", "won", "lost").
+     */
     public String getGameState() {
         return gameState;
     }
 
+    /**
+     * @return The player's score.
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * @return The player's HP.
+     */
     public int getHP() {
         return hp;
     }
 
+    /**
+     * @return The player's moves left.
+     */
     public int getMovesLeft() {
         return movesLeft;
     }
