@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dungeon.gui.Controller">
     <padding>
@@ -13,6 +15,33 @@
 
         </GridPane>
     </center>
+   <right>
+      <BorderPane maxHeight="-Infinity" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <top>
+            <Button fx:id="upButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" text="↑" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font></Button>
+         </top>
+         <left>
+            <Button fx:id="leftButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" text="←" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font></Button>
+         </left>
+         <right>
+            <Button fx:id="rightButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" text="→" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font></Button>
+         </right>
+         <bottom>
+            <Button fx:id="downButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" text="↓" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font></Button>
+         </bottom></BorderPane>
+   </right>
 
 
 </BorderPane>

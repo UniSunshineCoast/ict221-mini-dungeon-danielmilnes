@@ -1,11 +1,9 @@
 package dungeon.engine;
 
-import javafx.scene.text.Text;
 import java.util.Random;
 
 public class GameEngine {
 
-    private Cell[][] map;
     private Tile[][] grid;
     private int level = 1;
     private int ladderX;
@@ -24,9 +22,10 @@ public class GameEngine {
     public GameEngine(int size) {
         gameState = "starting";
 
-        // The grid is the logical view of the game. The map is the JavaFX view of the game.
-        // The grid is a 2D array of Tile objects which each have a "type" and "content".
+        // The grid is the logical view of the game.
+        // It is a 2D array of Tile objects which each have a "type" and "content".
         // "Type" is player, floor, wall, monster, etc. "Content" is what to display for that tile (@, ., #, M).
+        // They also have an fxStyle which I'll get to later TODO
 
         // Create grid
         grid = new Tile[size][size];
@@ -36,40 +35,8 @@ public class GameEngine {
         buildLevel();
 
         gameState = "running";
-
-
-        // CODE FOR GUI
-        /*
-        // Create cell panes
-        map = new Cell[size][size];
-        // Initial cell setup
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
-                Cell cell = new Cell();
-                map[x][y] = cell;
-            }
-        }
-        // Draw map
-        drawMap();
-         */
     }
 
-    /**
-     * Sets the content of each cell in the GUI.
-     */
-    public void drawMap() {
-        int size = getSize();
-        for (int x = 0; x < size; x++) {    // Loop through cell grid, add text field to each cell
-            for (int y = 0; y < size; y++) {
-                Tile tile = grid[x][y];
-                Cell cell = map[x][y];
-                Text text = new Text(tile.getContent());
-                cell.getChildren().add(text);
-                cell.setStyle(tile.getFXStyle());
-                map[x][y] = cell;
-            }
-        }
-    }
 
     /**
      * Places a tile of type (tile), (count) number of times
@@ -106,8 +73,9 @@ public class GameEngine {
                 if (level == 1) {grid[getSize()-1][1] = new PlayerTile();}
                 if (level == 2) {grid[ladderX][ladderY] = new PlayerTile();}
             }
-            // Wall tile: idk what to do with these yet
+            // Wall tile: idk what to do with these yet, place them randomly
             if (tile.equals("wall")) {grid[x][y] = new WallTile();}
+
             // Tiles to be placed randomly
             if (tile.equals("trap")) {grid[x][y] = new TrapTile();}
             if (tile.equals("gold")) {grid[x][y] = new GoldTile();}
@@ -154,6 +122,9 @@ public class GameEngine {
                 System.out.println("Invalid input.");
                 return;
         }
+        // DEBUG
+        System.out.println("DEBUG Player: " + playerX + ", " + playerY + " " + grid[playerY][playerX].getType());
+        System.out.println("DEBUG Destination: " + destinationX + ", " + destinationY + " " + grid[destinationY][destinationX].getType());
         // Don't allow player to move into walls
         if (grid[destinationY][destinationX].getType().equals("wall")) {return;}
 
@@ -244,7 +215,7 @@ public class GameEngine {
      */
     public int getPlayerX() {
         Tile[][] grid = getGrid();
-        int xCounter = 0;
+        int xCounter;
         for (Tile[] row : grid) {
             xCounter = 0;
             for (Tile tile : row) {
@@ -292,14 +263,6 @@ public class GameEngine {
         return grid;
     }
 
-    /**
-     * The JavaFX map of the current game.
-     *
-     * @return the map, which is a 2D cell array.
-     */
-    public Cell[][] getMap() {
-        return map;
-    }
 
     /**
      * @return The game state ("starting", "running", "won", "lost").
