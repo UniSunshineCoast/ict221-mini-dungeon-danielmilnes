@@ -16,31 +16,47 @@
         </GridPane>
     </center>
    <right>
-      <BorderPane maxHeight="-Infinity" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-         <top>
-            <Button fx:id="upButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" text="↑" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="24.0" />
-               </font></Button>
-         </top>
-         <left>
-            <Button fx:id="leftButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" text="←" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="24.0" />
-               </font></Button>
-         </left>
-         <right>
-            <Button fx:id="rightButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" text="→" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="24.0" />
-               </font></Button>
-         </right>
-         <bottom>
-            <Button fx:id="downButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" text="↓" BorderPane.alignment="CENTER">
-               <font>
-                  <Font size="24.0" />
-               </font></Button>
-         </bottom></BorderPane>
+      <VBox prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Label fx:id="hpLabel" text="HP: default" />
+                  <Label fx:id="scoreLabel" text="Score: default" />
+                  <Label fx:id="movesLabel" text="Moves remaining: default" />
+               </children>
+            </VBox>
+            <BorderPane maxHeight="-Infinity" prefHeight="200.0" prefWidth="200.0">
+               <top>
+                  <Button fx:id="upButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" text="↑" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Button>
+               </top>
+               <left>
+                  <Button fx:id="leftButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" text="←" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Button>
+               </left>
+               <right>
+                  <Button fx:id="rightButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" text="→" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Button>
+               </right>
+               <bottom>
+                  <Button fx:id="downButton" mnemonicParsing="false" prefHeight="55.0" prefWidth="55.0" text="↓" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Button>
+               </bottom>
+            </BorderPane>
+         </children>
+      </VBox>
    </right>
 
 

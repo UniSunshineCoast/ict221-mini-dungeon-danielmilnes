@@ -5,6 +5,7 @@ import dungeon.engine.GameEngine;
 import dungeon.engine.Tile;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
@@ -14,6 +15,9 @@ public class Controller {
     @FXML private Button downButton;
     @FXML private Button leftButton;
     @FXML private Button rightButton;
+    @FXML private Label hpLabel;
+    @FXML private Label scoreLabel;
+    @FXML private Label movesLabel;
 
     GameEngine engine;
 
@@ -34,9 +38,13 @@ public class Controller {
     }
 
     private void updateGui() {
+        // Update labels
+        hpLabel.setText("HP: " + engine.getHP());
+        scoreLabel.setText("Score: " + engine.getScore());
+        movesLabel.setText("Moves remaining: " + engine.getMovesLeft());
+
         // Clear old GUI grid pane
         gridPane.getChildren().clear();
-
         // Loop through grid, create Cell (StackPane) for each tile, add to gridPane
         int size = engine.getSize();
         for (int x = 0; x < size; x++) {    // Loop through cell grid, add text field to each cell
@@ -46,9 +54,10 @@ public class Controller {
                 Text text = new Text(tile.getContent());
                 cell.getChildren().add(text);
                 cell.setStyle(tile.getFXStyle());
+                cell.setPrefWidth(15);
+                cell.setPrefHeight(15);
                 gridPane.add(cell, x, y);
             }
         }
-        gridPane.setGridLinesVisible(false);
     }
 }

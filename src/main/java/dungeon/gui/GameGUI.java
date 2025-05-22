@@ -20,7 +20,7 @@ public class GameGUI extends Application {
         BorderPane root = FXMLLoader.load(getClass().getResource("game_gui.fxml"));
 
         // Display scene
-        primaryStage.setScene(new Scene(root, 800, 800));
+        primaryStage.setScene(new Scene(root, 400, 400));
         primaryStage.setTitle("MiniDungeon Game");
         primaryStage.show();
     }
