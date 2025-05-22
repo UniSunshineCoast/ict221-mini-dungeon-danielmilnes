@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import java.util.ArrayList;
 
 public class Controller {
     @FXML private GridPane gridPane;
@@ -18,6 +19,7 @@ public class Controller {
     @FXML private Label hpLabel;
     @FXML private Label scoreLabel;
     @FXML private Label movesLabel;
+    @FXML private Label messageLogLabel;
 
     GameEngine engine;
 
@@ -42,6 +44,15 @@ public class Controller {
         hpLabel.setText("HP: " + engine.getHP());
         scoreLabel.setText("Score: " + engine.getScore());
         movesLabel.setText("Moves remaining: " + engine.getMovesLeft());
+
+        // Update message log
+        String messages = "\n";
+        ArrayList<String> messageLog = engine.getMessageLog();
+        for (String s : messageLog) {
+            messages = messages.concat(s);
+            messages = messages.concat("\n");
+        }
+        messageLogLabel.setText(messages);
 
         // Clear old GUI grid pane
         gridPane.getChildren().clear();

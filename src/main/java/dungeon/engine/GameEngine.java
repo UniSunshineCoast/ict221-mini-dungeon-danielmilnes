@@ -1,5 +1,6 @@
 package dungeon.engine;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class GameEngine {
@@ -13,6 +14,7 @@ public class GameEngine {
     private int hp = 10;
     private int movesLeft = 100;
     Random r = new Random();
+    private ArrayList<String> messageLog = new ArrayList<>();
 
     /**
      * Runs the game.
@@ -122,9 +124,6 @@ public class GameEngine {
                 System.out.println("Invalid input.");
                 return;
         }
-        // DEBUG
-        System.out.println("DEBUG Player: " + playerX + ", " + playerY + " " + grid[playerY][playerX].getType());
-        System.out.println("DEBUG Destination: " + destinationX + ", " + destinationY + " " + grid[destinationY][destinationX].getType());
         // Don't allow player to move into walls
         if (grid[destinationY][destinationX].getType().equals("wall")) {return;}
 
@@ -146,37 +145,52 @@ public class GameEngine {
         switch (grid[y][x].getType()) {
             case "gold":
                 score += 2;
+                addToMessageLog("You pick up a gold piece.");
                 break;
             case "healthPotion":
                 hp += 4;
                 if (hp > 10) {hp = 10;}
+                addToMessageLog("You drink a health potion.");
                 break;
             case "trap":
                 hp -= 2;
+                addToMessageLog("You trigger a trap!");
                 break;
             case "meleeMutant":
                 hp -= 2;
                 score += 2;
+                addToMessageLog("You defeat a melee monster!");
                 break;
             case "rangedMutant":
                 score += 2;
+                addToMessageLog("You defeat a ranged monster!");
                 break;
             case "ladder": // Advance level or end game
                 if (level == 1) {
                     level = 2;
                     clearGrid();
                     buildLevel();
+                    addToMessageLog("You advance to the second level!");
                 }
                 else {
+                    addToMessageLog("You escape the dungeon!");
                     gameState = "won";
                 }
         }
         // check for ranged enemies in attack range, and roll 50% chance to hit
-        // 2 if statements - will not cause index out of bounds exception
-        if (x >= 2 && r.nextBoolean()) {if (grid[y][x-2].getType().equals("rangedMutant")) {hp -= 2;}}
-        if (x <= 7 && r.nextBoolean()) {if (grid[y][x+2].getType().equals("rangedMutant")) {hp -= 2;}}
-        if (y >= 2 && r.nextBoolean()) {if (grid[y-2][x].getType().equals("rangedMutant")) {hp -= 2;}}
-        if (y <= 7 && r.nextBoolean()) {if (grid[y+2][x].getType().equals("rangedMutant")) {hp -= 2;}}
+        // 3 if statements - will not cause index out of bounds exception, message for hit or miss
+        if (x >= 2) {if (grid[y][x-2].getType().equals("rangedMutant")) {
+                if (r.nextBoolean()) {hp -= 2; addToMessageLog("A ranged monster shoots you!");}
+                else {addToMessageLog("A ranged monster shoots at you and misses!");}}}
+        if (x <= 7) {if (grid[y][x+2].getType().equals("rangedMutant")) {
+            if (r.nextBoolean()) {hp -= 2; addToMessageLog("A ranged monster shoots you!");}
+            else {addToMessageLog("A ranged monster shoots at you and misses!");}}}
+        if (y >= 2) {if (grid[y-2][x].getType().equals("rangedMutant")) {
+            if (r.nextBoolean()) {hp -= 2; addToMessageLog("A ranged monster shoots you!");}
+            else {addToMessageLog("A ranged monster shoots at you and misses!");}}}
+        if (y <= 7) {if (grid[y+2][x].getType().equals("rangedMutant")) {
+            if (r.nextBoolean()) {hp -= 2; addToMessageLog("A ranged monster shoots you!");}
+            else {addToMessageLog("A ranged monster shoots at you and misses!");}}}
 
         // Update grid
         grid[getPlayerY()][getPlayerX()] = new FloorTile(); // Set player coordinates to empty tile
@@ -208,6 +222,19 @@ public class GameEngine {
         place("meleeMutant", 3);
         place("rangedMutant", 1);
         place("healthPotion", 2);
+    }
+
+    /**
+     * Add a string to the message log (ArrayList variable messageLog).
+     * Max length 10, removes oldest message to add new one.
+     * @param s The string to add
+     */
+    public void addToMessageLog(String s) {
+        if (messageLog.size() < 10) {messageLog.add(s);}
+        else {
+            messageLog.remove(0);
+            messageLog.add(s);
+        }
     }
 
     /**
@@ -263,9 +290,8 @@ public class GameEngine {
         return grid;
     }
 
-
     /**
-     * @return The game state ("starting", "running", "won", "lost").
+     * @return The game state ("starting", "running", "won", or "lost").
      */
     public String getGameState() {
         return gameState;
@@ -290,6 +316,13 @@ public class GameEngine {
      */
     public int getMovesLeft() {
         return movesLeft;
+    }
+
+    /**
+     * @return The message log.
+     */
+    public ArrayList<String> getMessageLog() {
+        return messageLog;
     }
 
     /**
