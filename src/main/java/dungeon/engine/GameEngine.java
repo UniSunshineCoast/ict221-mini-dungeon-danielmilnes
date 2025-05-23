@@ -284,10 +284,19 @@ public class GameEngine {
         addToMessageLog("HIGH SCORES");
         for (int i = 0; i < highScores.size(); i++) {
             HighScore hs = highScores.get(i);
-            String message = (i+1) + "\t" + hs.score + "\t"
-                + hs.timestamp.getYear() + " " + hs.timestamp.getMonthValue() + " "
-                + hs.timestamp.getDayOfMonth() + " " + hs.timestamp.getHour() + ":"
-                + hs.timestamp.getMinute() + ":" + hs.timestamp.getSecond();
+            String year = String.valueOf(hs.timestamp.getYear());
+            String month = String.valueOf(hs.timestamp.getMonthValue());
+            if (month.length() == 1) {month = "0" + month;}
+            String day = String.valueOf(hs.timestamp.getDayOfMonth());
+            if (day.length() == 1) {day = "0" + day;}
+            String hour = String.valueOf(hs.timestamp.getHour());
+            if (hour.length() == 1) {hour = "0" + hour;}
+            String minute = String.valueOf(hs.timestamp.getMinute());
+            if (minute.length() == 1) {minute = "0" + minute;}
+            String second = String.valueOf(hs.timestamp.getSecond());
+            if (second.length() == 1) {second = "0" + second;}
+            String message = (i+1) + ".\t" + hs.score + "\t" + year + "-" + month + "-" + day + " " +
+                    hour + ":" + minute + ":" + second;
             addToMessageLog(message);
         }
     }
