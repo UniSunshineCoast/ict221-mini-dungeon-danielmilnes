@@ -5,14 +5,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dungeon.gui.Controller">
+<BorderPane prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dungeon.gui.Controller">
     <padding>
         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
     </padding>
    <right>
       <VBox prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <VBox prefHeight="200.0" prefWidth="100.0">
+            <VBox prefHeight="60.0">
                <children>
                   <Label fx:id="hpLabel" text="HP: default" />
                   <Label fx:id="scoreLabel" text="Score: default" />
@@ -49,6 +49,25 @@
                   </Button>
                </bottom>
             </BorderPane>
+            <VBox alignment="CENTER">
+               <children>
+                  <Button fx:id="resetButton" mnemonicParsing="false" text="Reset">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></Button>
+                  <Button fx:id="saveButton" mnemonicParsing="false" text="Save">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin></Button>
+                  <Button fx:id="loadButton" mnemonicParsing="false" text="Load">
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin></Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="15.0" />
+               </VBox.margin>
+            </VBox>
          </children>
       </VBox>
    </right>

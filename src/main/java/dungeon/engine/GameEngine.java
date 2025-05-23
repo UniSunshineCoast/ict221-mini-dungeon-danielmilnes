@@ -101,7 +101,9 @@ public class GameEngine {
         int playerY = getPlayerY();
         int destinationX;
         int destinationY;
-        switch (input) {    // Ignore command if out of bounds, otherwise determine destination
+        switch (input) {
+            // For player movement: return (ignore command) if out of bounds, otherwise determine destination
+            // For save, load, reset: just execute it
             case "up":
                 if (playerY == 0) {return;}
                 destinationX = playerX;
@@ -122,6 +124,17 @@ public class GameEngine {
                 destinationX = playerX + 1;
                 destinationY = playerY;
                 break;
+            case "reset": // Reset the game
+                gameState = "starting";
+                hp = 10;
+                score = 0;
+                movesLeft = 100;
+                level = 1;
+                clearGrid();
+                buildLevel();
+                messageLog.clear();
+                gameState = "running";
+                return;
             default:
                 System.out.println("Invalid input.");
                 return;

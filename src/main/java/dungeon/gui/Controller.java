@@ -20,6 +20,9 @@ public class Controller {
     @FXML private Label scoreLabel;
     @FXML private Label movesLabel;
     @FXML private Label messageLogLabel;
+    @FXML private Button resetButton;
+    @FXML private Button saveButton;
+    @FXML private Button loadButton;
 
     GameEngine engine;
 
@@ -29,18 +32,26 @@ public class Controller {
         engine = new GameEngine(10);
 
         // Bind event handlers
-        // U, D, L, R buttons: send player input to engine then update GUI
         upButton.setOnAction(e -> processInput("up"));
         downButton.setOnAction(e -> processInput("down"));
         leftButton.setOnAction(e -> processInput("left"));
         rightButton.setOnAction(e -> processInput("right"));
+        resetButton.setOnAction(e -> processInput("reset"));
+        saveButton.setOnAction(e -> processInput("save"));
+        loadButton.setOnAction(e -> processInput("load"));
 
         // Add all cells to GUI
         updateGui();
     }
 
     private void processInput(String input) {
-        // Ignore all inputs if game state is not "running"
+        // Player can press reset or load at any time
+        if (input.equals("reset") || input.equals("load")) {
+            engine.playerInput(input);
+            updateGui();
+            return;
+        }
+        // Ignore all other inputs if game state is not "running"
         if (engine.getGameState().equals("running")) {
             engine.playerInput(input);
             updateGui();
