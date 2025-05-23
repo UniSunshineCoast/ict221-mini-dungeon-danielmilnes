@@ -1,6 +1,8 @@
 package dungeon.engine;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 public class GameEngine {
@@ -15,10 +17,10 @@ public class GameEngine {
     private int movesLeft = 100;
     Random r = new Random();
     private ArrayList<String> messageLog = new ArrayList<>();
+    private ArrayList<HighScore> highScores = new ArrayList<>();
 
     /**
-     * Runs the game.
-     *
+     * Initialises the game.
      * @param size the width and height.
      */
     public GameEngine(int size) {
@@ -88,7 +90,7 @@ public class GameEngine {
     }
 
     /**
-     * Run when receiving input from the TextUI/GUI controller.
+     * Receives and processes input from the TextUI/GUI controller.
      * @param input The input. Only accepts "up", "down", "left" and "right".
      */
     public void playerInput(String input) {
@@ -131,7 +133,10 @@ public class GameEngine {
         moveTo(destinationX, destinationY);
 
         // Check if player lost game
-        if (movesLeft == 0 || hp <= 0) {gameState = "lost";}
+        if (movesLeft == 0 || hp <= 0) {
+            gameState = "lost";
+            addToMessageLog("You lose!");
+        }
     }
 
     /**
@@ -175,6 +180,8 @@ public class GameEngine {
                 else {
                     addToMessageLog("You escape the dungeon!");
                     gameState = "won";
+                    addHighScore(score, LocalDateTime.now());
+                    logHighScores();
                 }
         }
         // check for ranged enemies in attack range, and roll 50% chance to hit
@@ -230,10 +237,45 @@ public class GameEngine {
      * @param s The string to add
      */
     public void addToMessageLog(String s) {
+        // Add message to end of log if it is less than 10 messages long
         if (messageLog.size() < 10) {messageLog.add(s);}
+        // Otherwise remove the first message and add the new one to the end
         else {
-            messageLog.remove(0);
+            messageLog.removeFirst();
             messageLog.add(s);
+        }
+    }
+
+    /**
+     * Checks if a score should be added to the high score list, and adds it if so.
+     * HighScore is a class to store both a score and timestamp.
+     * @param score The score to be added
+     * @param timestamp The timestamp of the score.
+     */
+    public void addHighScore(int score, LocalDateTime timestamp) {
+        HighScore newScore = new HighScore(score, timestamp);
+        // If list less than 5 long, add score to it
+        if (highScores.size() < 5) {highScores.add(newScore);}
+        // Otherwise, if it is greater than 5th place, add remove 5th place and add the new score
+        else {
+            if (newScore.score > highScores.getLast().score) {
+                highScores.removeLast();
+                highScores.add(newScore);
+            }
+        }
+        // Finally, sort the list
+        Collections.sort(highScores);
+    }
+
+    private void logHighScores() {
+        addToMessageLog("HIGH SCORES");
+        for (int i = 0; i < highScores.size(); i++) {
+            HighScore hs = highScores.get(i);
+            String message = (i+1) + "\t" + hs.score + "\t"
+                + hs.timestamp.getYear() + " " + hs.timestamp.getMonthValue() + " "
+                + hs.timestamp.getDayOfMonth() + " " + hs.timestamp.getHour() + ":"
+                + hs.timestamp.getMinute() + ":" + hs.timestamp.getSecond();
+            addToMessageLog(message);
         }
     }
 

@@ -30,13 +30,21 @@ public class Controller {
 
         // Bind event handlers
         // U, D, L, R buttons: send player input to engine then update GUI
-        upButton.setOnAction(e -> {engine.playerInput("up"); updateGui();});
-        downButton.setOnAction(e -> {engine.playerInput("down"); updateGui();});
-        leftButton.setOnAction(e -> {engine.playerInput("left"); updateGui();});
-        rightButton.setOnAction(e -> {engine.playerInput("right"); updateGui();});
+        upButton.setOnAction(e -> processInput("up"));
+        downButton.setOnAction(e -> processInput("down"));
+        leftButton.setOnAction(e -> processInput("left"));
+        rightButton.setOnAction(e -> processInput("right"));
 
         // Add all cells to GUI
         updateGui();
+    }
+
+    private void processInput(String input) {
+        // Ignore all inputs if game state is not "running"
+        if (engine.getGameState().equals("running")) {
+            engine.playerInput(input);
+            updateGui();
+        }
     }
 
     private void updateGui() {
