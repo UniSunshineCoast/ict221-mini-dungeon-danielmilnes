@@ -4,6 +4,7 @@ import dungeon.engine.Cell;
 import dungeon.engine.GameEngine;
 import dungeon.engine.Tile;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
@@ -23,6 +24,7 @@ public class Controller {
     @FXML private Button resetButton;
     @FXML private Button saveButton;
     @FXML private Button loadButton;
+    @FXML private Button helpButton;
 
     GameEngine engine;
 
@@ -39,6 +41,36 @@ public class Controller {
         resetButton.setOnAction(e -> processInput("reset"));
         saveButton.setOnAction(e -> processInput("save"));
         loadButton.setOnAction(e -> processInput("load"));
+        helpButton.setOnAction(e -> {
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setTitle("Help");
+            a.setHeaderText("MiniDungeon Game");
+            a.setContentText(
+                    """
+                    Welcome to MiniDungeon Game!
+                    Get to the dungeon exit in 100 moves, scoring as many points as possible.
+                    
+                    Controls:
+                    Use arrow buttons to move.
+                    Help button displays this menu.
+                    New Game button starts a new game.
+                    Save button saves the game state to disk.
+                    Load button loads the game state from disk.
+                    
+                    Tiles:
+                    @\tThis is you.
+                    <\tThe level entrance.
+                    >\tThe level exit.
+                    #\tA wall.
+                    .\tThe floor.
+                    G\tGold - worth 2 points!
+                    H\tPotion - restores 2 HP (max 10).
+                    M\tMutant monster - step on it to fight! Reduces HP, increases score by 2.
+                    R\tRanged mutant monster - shoots you from 2 tiles away! Step on it to fight, increases score by 2.
+                    T\tTrap - avoid these! Reduces HP.
+                    """);
+            a.show();
+        });
 
         // Add all cells to GUI
         updateGui();
