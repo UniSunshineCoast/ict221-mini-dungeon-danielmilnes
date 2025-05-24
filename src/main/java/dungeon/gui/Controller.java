@@ -65,8 +65,10 @@ public class Controller {
                     .\tThe floor.
                     G\tGold - worth 2 points!
                     H\tPotion - restores 2 HP (max 10).
-                    M\tMutant monster - step on it to fight! Reduces HP, increases score by 2.
-                    R\tRanged mutant monster - shoots you from 2 tiles away! Step on it to fight, increases score by 2.
+                    M\tMutant monster - step on it to fight!
+                     \tReduces HP, increases score by 2.
+                    R\tRanged mutant monster - shoots you from 2 tiles away!
+                     \tStep on it to fight, increases score by 2.
                     T\tTrap - avoid these! Reduces HP.
                     """);
             a.show();

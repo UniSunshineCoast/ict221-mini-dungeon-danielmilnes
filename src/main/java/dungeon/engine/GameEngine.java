@@ -148,7 +148,9 @@ public class GameEngine {
         // Check if player lost game
         if (movesLeft == 0 || hp <= 0) {
             gameState = "lost";
+            score = -1;
             addToMessageLog("You lose!");
+            logHighScores();
         }
     }
 
@@ -280,6 +282,9 @@ public class GameEngine {
         Collections.sort(highScores);
     }
 
+    /**
+     * Adds the high score list to the message log.
+     */
     private void logHighScores() {
         addToMessageLog("HIGH SCORES");
         for (int i = 0; i < highScores.size(); i++) {
