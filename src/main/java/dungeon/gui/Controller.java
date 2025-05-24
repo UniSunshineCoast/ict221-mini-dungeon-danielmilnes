@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ public class Controller {
     @FXML private Button helpButton;
 
     GameEngine engine;
+
+    // Sprites or text
+    boolean spritesMode = true;
 
     @FXML
     public void initialize() {
@@ -115,11 +119,17 @@ public class Controller {
             for (int y = 0; y < size; y++) {
                 Tile tile = engine.getGrid()[y][x];
                 Cell cell = new Cell();
-                Text text = new Text(tile.getContent());
-                cell.getChildren().add(text);
-                cell.setStyle(tile.getFXStyle());
-                cell.setPrefWidth(15);
-                cell.setPrefHeight(15);
+                if (spritesMode) {
+                    ImageView image = new ImageView(tile.getType() + ".png");
+                    cell.getChildren().add(image);
+                }
+                else {
+                    Text text = new Text(tile.getContent());
+                    cell.getChildren().add(text);
+                    cell.setStyle(tile.getFXStyle());
+                    cell.setPrefWidth(15);
+                    cell.setPrefHeight(15);
+                }
                 gridPane.add(cell, x, y);
             }
         }

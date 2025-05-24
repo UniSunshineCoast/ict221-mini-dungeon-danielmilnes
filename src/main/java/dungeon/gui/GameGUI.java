@@ -1,6 +1,5 @@
 package dungeon.gui;
 
-import dungeon.engine.GameEngine;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,8 +7,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
- * GUI for the Maze Runner Game.
- *
+ * GUI for MiniDungeon game.
  * NOTE: Do NOT run this class directly in IntelliJ - run 'RunGame' instead.
  */
 public class GameGUI extends Application {
@@ -20,7 +18,10 @@ public class GameGUI extends Application {
         BorderPane root = FXMLLoader.load(getClass().getResource("game_gui.fxml"));
 
         // Display scene
-        primaryStage.setScene(new Scene(root, 500, 400));
+        // TEXT
+        //primaryStage.setScene(new Scene(root, 500, 400));
+        // SPRITES
+        primaryStage.setScene(new Scene(root, 600, 550));
         primaryStage.setTitle("MiniDungeon Game");
         primaryStage.show();
     }
