@@ -9,14 +9,14 @@ public class GameEngine {
 
     private Tile[][] grid;
     private int level = 1;
-    private int ladderX;
+    private int ladderX; // Remember ladder position between levels
     private int ladderY;
-    private String gameState;
+    private String gameState; // Determines whether game should accept inputs, also for debug
     private int score = 0;
     private int hp = 10;
     private int movesLeft = 100;
     private int newGameDifficulty = 3; // This is the one that can be changed - stops difficulty change midgame
-    private int difficulty;            // Set to value of newGameDifficulty upon game start
+    private int difficulty; // Set to value of newGameDifficulty upon game start
     Random r = new Random();
     private ArrayList<String> messageLog = new ArrayList<>();
     private ArrayList<HighScore> highScores = new ArrayList<>();
@@ -32,7 +32,10 @@ public class GameEngine {
         // The grid is the logical view of the game.
         // It is a 2D array of Tile objects which each have a "type" and "content".
         // "Type" is player, floor, wall, monster, etc. "Content" is what to display for that tile (@, ., #, M).
-        // They also have an fxStyle which I'll get to later TODO
+        // They also have an fxStyle which I've decided not to implement (TextUI superseded by GUI),
+        // but I'm keeping them because it might prove I understand polymorphism or something. If implemented,
+        // Tile.fxStyle would be a String with the tile and text colour of that particular tile (black for Floor tile,
+        // yellow for Gold tile, green for Mutant tile).
 
         // Create grid
         grid = new Tile[size][size];
@@ -46,8 +49,7 @@ public class GameEngine {
 
 
     /**
-     * Places a tile of type (tile), (count) number of times
-     *
+     * Places a tile in the grid.
      * @param tile  The tile to be placed
      * @param count The number of this tile to be placed
      */
@@ -127,7 +129,7 @@ public class GameEngine {
                 destinationX = playerX + 1;
                 destinationY = playerY;
                 break;
-            case "reset": // Reset the game
+            case "reset": // Reset the game and variables
                 gameState = "starting";
                 hp = 10;
                 score = 0;
@@ -200,30 +202,35 @@ public class GameEngine {
                 else {
                     addToMessageLog("You escape the dungeon!");
                     gameState = "won";
-                    score *= (int)(1 + (difficulty-3)*.1);
+                    // Increase score based on initial difficulty (level 2 increases difficulty by 2)
+                    // Difficulty 1, score *= 1.1. Difficulty 3, score *= 1.3. Difficulty 10, score *= 2.0.
+                    // Then rounds down to keep it an integer.
+                    score = (int)(score * (1 + (difficulty-2)*.1));
                     addHighScore(score, LocalDateTime.now());
                     logHighScores();
                 }
         }
         // check for ranged enemies in attack range, and roll 50% chance to hit
         // 3 if statements - will not cause index out of bounds exception, message for hit or miss
-        if (x >= 2) {if (grid[y][x-2].getType().equals("rangedMutant")) {
+        if (gameState.equals("running")) {
+            if (x >= 2) {if (grid[y][x - 2].getType().equals("rangedMutant")) {
                 if (r.nextBoolean()) {hp -= 2; addToMessageLog("A ranged monster shoots you!");}
                 else {addToMessageLog("A ranged monster shoots at you and misses!");}}}
-        if (x <= 7) {if (grid[y][x+2].getType().equals("rangedMutant")) {
-            if (r.nextBoolean()) {hp -= 2; addToMessageLog("A ranged monster shoots you!");}
-            else {addToMessageLog("A ranged monster shoots at you and misses!");}}}
-        if (y >= 2) {if (grid[y-2][x].getType().equals("rangedMutant")) {
-            if (r.nextBoolean()) {hp -= 2; addToMessageLog("A ranged monster shoots you!");}
-            else {addToMessageLog("A ranged monster shoots at you and misses!");}}}
-        if (y <= 7) {if (grid[y+2][x].getType().equals("rangedMutant")) {
-            if (r.nextBoolean()) {hp -= 2; addToMessageLog("A ranged monster shoots you!");}
-            else {addToMessageLog("A ranged monster shoots at you and misses!");}}}
+            if (x <= 7) {if (grid[y][x + 2].getType().equals("rangedMutant")) {
+                if (r.nextBoolean()) {hp -= 2; addToMessageLog("A ranged monster shoots you!");}
+                else {addToMessageLog("A ranged monster shoots at you and misses!");}}}
+            if (y >= 2) {if (grid[y - 2][x].getType().equals("rangedMutant")) {
+                if (r.nextBoolean()) {hp -= 2; addToMessageLog("A ranged monster shoots you!");}
+                else {addToMessageLog("A ranged monster shoots at you and misses!");}}}
+            if (y <= 7) {if (grid[y + 2][x].getType().equals("rangedMutant")) {
+                if (r.nextBoolean()) {hp -= 2; addToMessageLog("A ranged monster shoots you!");}
+                else {addToMessageLog("A ranged monster shoots at you and misses!");}}}
+        }
 
         // Update grid
         grid[getPlayerY()][getPlayerX()] = new FloorTile(); // Set player coordinates to empty tile
-        place("entry", 1);  // Replace the entry tile in case the player tile overwrote it
-        grid[y][x] = new PlayerTile();
+        place("entry", 1); // Replace the entry tile in case the player tile overwrote it
+        grid[y][x] = new PlayerTile(); // Place player
     }
 
     /**
@@ -292,9 +299,11 @@ public class GameEngine {
      * Adds the high score list to the message log.
      */
     private void logHighScores() {
+        if (highScores.isEmpty()) {return;} // Ignore if no high scores to print
         addToMessageLog("HIGH SCORES");
         for (int i = 0; i < highScores.size(); i++) {
             HighScore hs = highScores.get(i);
+            // Make list neater by adding 0 in front of single-digit month, day, hour, minute & second
             String year = String.valueOf(hs.timestamp.getYear());
             String month = String.valueOf(hs.timestamp.getMonthValue());
             if (month.length() == 1) {month = "0" + month;}
