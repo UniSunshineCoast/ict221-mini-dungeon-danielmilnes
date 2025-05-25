@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Spinner;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -26,6 +27,7 @@ public class Controller {
     @FXML private Button saveButton;
     @FXML private Button loadButton;
     @FXML private Button helpButton;
+    @FXML private Spinner<Integer> difficultySelector;
 
     GameEngine engine;
 
@@ -77,6 +79,9 @@ public class Controller {
                     """);
             a.show();
         });
+        difficultySelector.valueProperty().addListener(e ->
+                engine.setNewGameDifficulty(difficultySelector.getValue())
+        );
 
         // Add all cells to GUI
         updateGui();

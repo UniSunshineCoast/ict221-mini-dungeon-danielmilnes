@@ -4,13 +4,14 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.control.SpinnerValueFactory.IntegerSpinnerValueFactory?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dungeon.gui.Controller">
+<BorderPane prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dungeon.gui.Controller">
     <padding>
         <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
     </padding>
    <right>
-      <VBox prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <VBox prefHeight="60.0">
                <children>
@@ -90,6 +91,16 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </HBox>
+            <Label text="Difficulty (applies on new game)">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </Label>
+            <Spinner fx:id="difficultySelector" prefWidth="75.0">
+               <valueFactory>
+                  <SpinnerValueFactory.IntegerSpinnerValueFactory min="1" max="10" initialValue="3" />
+               </valueFactory>
+            </Spinner>
          </children>
       </VBox>
    </right>

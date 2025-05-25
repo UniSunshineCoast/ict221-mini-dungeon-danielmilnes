@@ -15,6 +15,8 @@ public class GameEngine {
     private int score = 0;
     private int hp = 10;
     private int movesLeft = 100;
+    private int newGameDifficulty = 3; // This is the one that can be changed - stops difficulty change midgame
+    private int difficulty;            // Set to value of newGameDifficulty upon game start
     Random r = new Random();
     private ArrayList<String> messageLog = new ArrayList<>();
     private ArrayList<HighScore> highScores = new ArrayList<>();
@@ -25,6 +27,7 @@ public class GameEngine {
      */
     public GameEngine(int size) {
         gameState = "starting";
+        difficulty = newGameDifficulty;
 
         // The grid is the logical view of the game.
         // It is a 2D array of Tile objects which each have a "type" and "content".
@@ -130,6 +133,7 @@ public class GameEngine {
                 score = 0;
                 movesLeft = 100;
                 level = 1;
+                difficulty = newGameDifficulty;
                 clearGrid();
                 buildLevel();
                 messageLog.clear();
@@ -188,6 +192,7 @@ public class GameEngine {
             case "ladder": // Advance level or end game
                 if (level == 1) {
                     level = 2;
+                    difficulty += 1;
                     clearGrid();
                     buildLevel();
                     addToMessageLog("You advance to the second level!");
@@ -195,6 +200,7 @@ public class GameEngine {
                 else {
                     addToMessageLog("You escape the dungeon!");
                     gameState = "won";
+                    score *= (int)(1 + (difficulty-3)*.1);
                     addHighScore(score, LocalDateTime.now());
                     logHighScores();
                 }
@@ -242,7 +248,7 @@ public class GameEngine {
         place("trap", 5);
         place("gold", 5);
         place("meleeMutant", 3);
-        place("rangedMutant", 1);
+        place("rangedMutant", difficulty);
         place("healthPotion", 2);
     }
 
@@ -385,6 +391,14 @@ public class GameEngine {
      */
     public int getMovesLeft() {
         return movesLeft;
+    }
+
+    /**
+     * Set the difficulty of a new game.
+     * @param d Difficulty (1-10)
+     */
+    public void setNewGameDifficulty(int d) {
+        if (0 < d && d <= 10) {newGameDifficulty = d;}
     }
 
     /**
