@@ -142,7 +142,11 @@ public class GameEngine {
                 gameState = "running";
                 return;
             case "save":
-                new SaveWriter(this);
+                saveGame();
+                return;
+            case "load":
+                loadSave("save.txt");
+                return;
             default:
                 System.out.println("Invalid input.");
                 return;
@@ -421,21 +425,85 @@ public class GameEngine {
 
     /**
      * Sets the RNG seed. Using the same seed and game inputs will have the same outcome.
-     * @param seed Any number
      */
     public void setSeed(long seed) {
         r = new Random(seed);
     }
 
-    // Getters and setters only used for save reading/writing
+    /**
+     * Writes the game state to "savegame.txt".
+     */
+    public void saveGame() {
+        new SaveWriter(this);
+    }
+
+    /**
+     * Loads a saved game state from a file.
+     * @param filename The file name, will be "save.txt" if created by playerInput("save").
+     */
+    public void loadSave(String filename) {
+        SaveReader save = new SaveReader(filename);
+
+        // Set variables
+        gameState = save.gameState;
+        level = save.level;
+        ladderX = save.ladderX;
+        ladderY = save.ladderY;
+        score = save.score;
+        hp = save.hp;
+        movesLeft = save.movesLeft;
+        difficulty = save.difficulty;
+
+        // Read grid - loop through list of tiles in string form, convert them to tiles in the grid
+        ArrayList<String> gridArrayList = save.tiles;
+        for (int y = 0; y < getSize(); y++) {
+            for (int x = 0; x < getSize(); x++) {
+                switch(gridArrayList.get(x*getSize() + y)) {
+                    case "@":
+                        grid[x][y] = new PlayerTile();
+                        break;
+                    case "<":
+                        grid[x][y] = new EntryTile();
+                        break;
+                    case ">":
+                        grid[x][y] = new LadderTile();
+                        break;
+                    case ".":
+                        grid[x][y] = new FloorTile();
+                        break;
+                    case "#":
+                        grid[x][y] = new WallTile();
+                        break;
+                    case "T":
+                        grid[x][y] = new TrapTile();
+                        break;
+                    case "G":
+                        grid[x][y] = new GoldTile();
+                        break;
+                    case "M":
+                        grid[x][y] = new MeleeMutantTile();
+                        break;
+                    case "R":
+                        grid[x][y] = new RangedMutantTile();
+                        break;
+                    case "H":
+                        grid[x][y] = new HealthPotionTile();
+                        break;
+                    default:
+                        System.out.println("Unknown tile at " + x + ", " + y);
+                        grid[x][y] = new FloorTile();
+                        break;
+                }
+            }
+        }
+
+    }
+
+    // Getters only used for save reading/writing
     int getLevel() {return level;}
     int getLadderX() {return ladderX;}
     int getLadderY() {return ladderY;}
     int getDifficulty() {return difficulty;}
-    void setLevel(int l) {level = l;}
-    void setLadderX(int x) {ladderX = x;}
-    void setLadderY(int y) {ladderY = y;}
-    void setDifficulty(int d) {difficulty = d;}
 
     /**
      * Plays a text-based game (obsolete, run TextUI.java)

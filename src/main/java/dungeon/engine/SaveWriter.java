@@ -8,11 +8,11 @@ public class SaveWriter {
     
     public SaveWriter(GameEngine engine) {
         // Assign variables that will need to be stored
+        String gameState = engine.getGameState();
         Tile[][] grid = engine.getGrid();
         int level = engine.getLevel();
         int ladderX = engine.getLadderX();
         int ladderY = engine.getLadderY();
-        String gameState = engine.getGameState();
         int score = engine.getScore();
         int hp = engine.getHP();
         int movesLeft = engine.getMovesLeft();
@@ -27,7 +27,7 @@ public class SaveWriter {
             // Write to save file
             try (PrintWriter output = new PrintWriter(saveFile)) {
                 // Write variables
-                output.println(level + " " + ladderX + " " + ladderY + " " + gameState + " " +
+                output.println(gameState + " " + level + " " + ladderX + " " + ladderY + " " +
                         score + " " + hp + " " + movesLeft + " " + difficulty);
                 // Write grid
                 for (Tile[] row : grid) {
