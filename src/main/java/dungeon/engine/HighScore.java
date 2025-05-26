@@ -2,6 +2,10 @@ package dungeon.engine;
 
 import java.time.LocalDateTime;
 
+/**
+ * HighScore is an information container for a high score value.
+ * It stores both the score, and the time that score was achieved.
+ */
 public class HighScore implements Comparable<HighScore> {
     int score;
     LocalDateTime timestamp;

@@ -77,7 +77,7 @@ public class GameEngine {
                 grid[x][y] = new LadderTile();
             }
 
-            // Player tile: spawn on entry tile
+            // Player tile: spawn next to entry tile
             if (tile.equals("player")) {
                 if (level == 1) {grid[getSize()-1][1] = new PlayerTile();}
                 if (level == 2) {grid[ladderX][ladderY] = new PlayerTile();}
@@ -298,7 +298,7 @@ public class GameEngine {
     /**
      * Adds the high score list to the message log.
      */
-    private void logHighScores() {
+    public void logHighScores() {
         if (highScores.isEmpty()) {return;} // Ignore if no high scores to print
         addToMessageLog("HIGH SCORES");
         for (int i = 0; i < highScores.size(); i++) {
@@ -415,6 +415,14 @@ public class GameEngine {
      */
     public ArrayList<String> getMessageLog() {
         return messageLog;
+    }
+
+    /**
+     * Sets the RNG seed. Using the same seed and game inputs will have the same outcome.
+     * @param seed Any number
+     */
+    public void setSeed(long seed) {
+        r = new Random(seed);
     }
 
     /**

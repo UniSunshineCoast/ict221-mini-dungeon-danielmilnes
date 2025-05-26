@@ -2,6 +2,7 @@ package dungeon.textui;
 
 import dungeon.engine.GameEngine;
 import dungeon.engine.Tile;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class TextUI {
@@ -19,6 +20,14 @@ public class TextUI {
             }
             System.out.println();
         }
+        // Update message log
+        String messages = "\n";
+        ArrayList<String> messageLog = engine.getMessageLog();
+        for (String s : messageLog) {
+            messages = messages.concat(s);
+            messages = messages.concat("\n");
+        }
+        System.out.println(messages);
     }
 
     public void processInput(String input) {

@@ -1,5 +1,8 @@
 package dungeon.engine;
 
+/**
+ * Tile is an information container for an in-game grid tile.
+ */
 public class Tile {
     private String type = "tile_parent_class";
     private String content = "!";
