@@ -141,6 +141,8 @@ public class GameEngine {
                 messageLog.clear();
                 gameState = "running";
                 return;
+            case "save":
+                new SaveWriter(this);
             default:
                 System.out.println("Invalid input.");
                 return;
@@ -424,6 +426,16 @@ public class GameEngine {
     public void setSeed(long seed) {
         r = new Random(seed);
     }
+
+    // Getters and setters only used for save reading/writing
+    int getLevel() {return level;}
+    int getLadderX() {return ladderX;}
+    int getLadderY() {return ladderY;}
+    int getDifficulty() {return difficulty;}
+    void setLevel(int l) {level = l;}
+    void setLadderX(int x) {ladderX = x;}
+    void setLadderY(int y) {ladderY = y;}
+    void setDifficulty(int d) {difficulty = d;}
 
     /**
      * Plays a text-based game (obsolete, run TextUI.java)
