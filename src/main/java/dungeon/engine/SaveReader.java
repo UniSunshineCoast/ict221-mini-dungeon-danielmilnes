@@ -39,7 +39,7 @@ public class SaveReader {
                 String tile = input.next();
                 tiles.add(tile);
             }
-
+            System.out.println("Save file read.");
         }
         catch (FileNotFoundException e) {System.out.println("No save file to read.");}
     }

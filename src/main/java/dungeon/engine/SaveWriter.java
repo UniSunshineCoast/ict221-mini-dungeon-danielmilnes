@@ -37,6 +37,7 @@ public class SaveWriter {
                     output.println();
                 }
             }
+            System.out.println("Game saved.");
         }
         catch (IOException e) {System.out.println("Error writing save file.");}
     }

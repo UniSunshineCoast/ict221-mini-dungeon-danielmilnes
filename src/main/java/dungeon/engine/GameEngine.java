@@ -200,7 +200,7 @@ public class GameEngine {
             case "ladder": // Advance level or end game
                 if (level == 1) {
                     level = 2;
-                    difficulty += 1;
+                    difficulty += 2;
                     clearGrid();
                     buildLevel();
                     addToMessageLog("You advance to the second level!");
@@ -496,7 +496,9 @@ public class GameEngine {
                 }
             }
         }
-
+        System.out.println("Save file loaded.");
+        messageLog.clear();
+        addToMessageLog("Save file loaded.");
     }
 
     // Getters only used for save reading/writing
