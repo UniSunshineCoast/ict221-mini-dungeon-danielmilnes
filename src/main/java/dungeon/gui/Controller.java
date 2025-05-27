@@ -1,6 +1,5 @@
 package dungeon.gui;
 
-import dungeon.engine.Cell;
 import dungeon.engine.GameEngine;
 import dungeon.engine.Tile;
 import javafx.fxml.FXML;
@@ -31,7 +30,7 @@ public class Controller {
 
     GameEngine engine;
 
-    // Sprites or text
+    // Whether to use sprites or text
     boolean spritesMode = true;
 
     @FXML

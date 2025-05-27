@@ -15,7 +15,7 @@ public class GameEngine {
     private int score = 0;
     private int hp = 10;
     private int movesLeft = 100;
-    private int newGameDifficulty = 3; // This is the one that can be changed - stops difficulty change midgame
+    private int newGameDifficulty = 3; // This variable can be changed - prevents difficulty change midgame
     private int difficulty; // Set to value of newGameDifficulty upon game start
     Random r = new Random();
     private ArrayList<String> messageLog = new ArrayList<>();
@@ -32,10 +32,11 @@ public class GameEngine {
         // The grid is the logical view of the game.
         // It is a 2D array of Tile objects which each have a "type" and "content".
         // "Type" is player, floor, wall, monster, etc. "Content" is what to display for that tile (@, ., #, M).
-        // They also have an fxStyle which I've decided not to implement (TextUI superseded by GUI),
+
+        // Tiles also have an fxStyle which I've decided not to implement (TextUI superseded by GUI),
         // but I'm keeping them because it might prove I understand polymorphism or something. If implemented,
-        // Tile.fxStyle would be a String with the tile and text colour of that particular tile (black for Floor tile,
-        // yellow for Gold tile, green for Mutant tile).
+        // Tile.fxStyle would be a String with the tile colour and text colour of that particular tile
+        // (black for Floor tile, yellow for Gold tile, green for Mutant tile, etc.).
 
         // Create grid
         grid = new Tile[size][size];
@@ -53,7 +54,7 @@ public class GameEngine {
      * @param tile  The tile to be placed
      * @param count The number of this tile to be placed
      */
-    public void place(String tile, int count) {
+    private void place(String tile, int count) {
         for (int counter = 0; counter < count; counter++) {
             boolean occupied = true;
             int x = 0; int y = 0;
@@ -82,10 +83,9 @@ public class GameEngine {
                 if (level == 1) {grid[getSize()-1][1] = new PlayerTile();}
                 if (level == 2) {grid[ladderX][ladderY] = new PlayerTile();}
             }
-            // Wall tile: idk what to do with these yet, place them randomly
-            if (tile.equals("wall")) {grid[x][y] = new WallTile();}
 
             // Tiles to be placed randomly
+            if (tile.equals("wall")) {grid[x][y] = new WallTile();}
             if (tile.equals("trap")) {grid[x][y] = new TrapTile();}
             if (tile.equals("gold")) {grid[x][y] = new GoldTile();}
             if (tile.equals("meleeMutant"))  {grid[x][y] = new MeleeMutantTile();}
@@ -172,7 +172,7 @@ public class GameEngine {
      * @param x Destination x (row)
      * @param y Destination y (column)
      */
-    public void moveTo(int x, int y) {
+    private void moveTo(int x, int y) {
         movesLeft -= 1;
         switch (grid[y][x].getType()) {
             case "gold":
@@ -242,7 +242,7 @@ public class GameEngine {
     /**
      * Fills the grid with floor tiles.
      */
-    public void clearGrid() {
+    private void clearGrid() {
         for (int x = 0; x < getSize(); x++) {
             for (int y = 0; y < getSize(); y++) {
                 grid[x][y] = new FloorTile();
@@ -253,7 +253,7 @@ public class GameEngine {
     /**
      * Places all the objects in the level.
      */
-    public void buildLevel() {
+    private void buildLevel() {
         place("entry", 1);
         place("wall", 20);
         place("player", 1);
@@ -270,7 +270,7 @@ public class GameEngine {
      * Max length 10, removes oldest message to add new one.
      * @param s The string to add
      */
-    public void addToMessageLog(String s) {
+    private void addToMessageLog(String s) {
         // Add message to end of log if it is less than 10 messages long
         if (messageLog.size() < 10) {messageLog.add(s);}
         // Otherwise remove the first message and add the new one to the end

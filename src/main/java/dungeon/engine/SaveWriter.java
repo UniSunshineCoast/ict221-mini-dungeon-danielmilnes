@@ -1,9 +1,12 @@
 package dungeon.engine;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.File;
 
+/**
+ * Constructing a SaveWriter object will take the current state of a GameEngine and
+ * write it to a text file called "save.txt".
+ */
 public class SaveWriter {
 
     public SaveWriter(GameEngine engine) {

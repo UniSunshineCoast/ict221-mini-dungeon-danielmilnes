@@ -5,6 +5,10 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * SaveReader is an information container for the game state. When running playerInput("save"),
+ * GameEngine.java will construct a SaveReader object then set the game state to match its values.
+ */
 public class SaveReader {
 
     // Create variables the GameEngine will read
