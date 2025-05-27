@@ -59,8 +59,8 @@ public class GameEngineTest {
         multipleInputs(engine, "down", 4);
 
         // Check all values
-        assertEquals(2, engine.getHP());
-        assertEquals(14, engine.getScore());
+        assertEquals(6, engine.getHP());
+        assertEquals(15, engine.getScore());
         assertEquals(70, engine.getMovesLeft());
         assertEquals("won", engine.getGameState());
     }

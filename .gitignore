@@ -1,5 +1,6 @@
 # Game save file
 save.txt
+saveFileTest.txt
 
 # Compiled class file
 *.class

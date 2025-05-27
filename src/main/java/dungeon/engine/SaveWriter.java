@@ -5,7 +5,7 @@ import java.io.PrintWriter;
 import java.io.File;
 
 public class SaveWriter {
-    
+
     public SaveWriter(GameEngine engine) {
         // Assign variables that will need to be stored
         String gameState = engine.getGameState();
@@ -25,20 +25,20 @@ public class SaveWriter {
                 System.out.println("Save file created.");
             }
             // Write to save file
-            try (PrintWriter output = new PrintWriter(saveFile)) {
-                // Write variables
-                output.println(gameState + " " + level + " " + ladderX + " " + ladderY + " " +
-                        score + " " + hp + " " + movesLeft + " " + difficulty);
-                // Write grid
-                for (Tile[] row : grid) {
-                    for (Tile tile : row) {
-                        output.print(tile.getContent() + " ");
-                    }
-                    output.println();
+            PrintWriter output = new PrintWriter(saveFile);
+            // Write variables
+            output.println(gameState + " " + level + " " + ladderX + " " + ladderY + " " +
+                    score + " " + hp + " " + movesLeft + " " + difficulty);
+            // Write grid
+            for (Tile[] row : grid) {
+                for (Tile tile : row) {
+                    output.print(tile.getContent() + " ");
                 }
+                output.println();
             }
             System.out.println("Game saved.");
+            output.close();
         }
-        catch (IOException e) {System.out.println("Error writing save file.");}
+        catch (Exception e) {System.out.println("Error writing save file.");}
     }
 }
